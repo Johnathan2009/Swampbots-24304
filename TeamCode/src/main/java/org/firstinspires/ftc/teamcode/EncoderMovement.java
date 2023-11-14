@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -61,7 +62,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
-
 
 
 public class EncoderMovement extends LinearOpMode {
@@ -131,9 +131,14 @@ public class EncoderMovement extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        //encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-        //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-        //encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+        // move forwards - encoderDrive(DRIVE_SPEED, 1, 1, 1, 1, 0);
+        // move backwards - encoderDrive(DRIVE_SPEED, -1, -1, -1, -1, 0);
+        // strafe left - encoderDrive(DRIVE_SPEED, -1, 1, 1, -1, 0);
+        // strafe right - encoderDrive(DRIVE_SPEED, 1, -1, -1, 1, 0);
+        encoderDrive(DRIVE_SPEED,10,10,10,10,0.5);
+        encoderDrive(DRIVE_SPEED,-10,-10,-10,-10,0.5);
+        encoderDrive(DRIVE_SPEED,-10,10,10,-10,0.5);
+        encoderDrive(DRIVE_SPEED,10,-10,-10,10,0.5);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -149,7 +154,7 @@ public class EncoderMovement extends LinearOpMode {
      *  3) Driver stops the OpMode running.
      */
     public void encoderDrive(double speed,
-                             double leftInches, double rightInches,
+                             double TopLeftInches, double TopRightInches, double BackLeftInches, double BackRightInches,
                              double timeoutS) {
         int newFrontLeftTarget;
         int newFrontRightTarget;
@@ -160,10 +165,10 @@ public class EncoderMovement extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFrontLeftTarget = frontLeftMotor.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newBackLeftTarget = backLeftMotor.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newFrontRightTarget = frontRightMotor.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            newBackRightTarget = backRightMotor.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newFrontLeftTarget = frontLeftMotor.getCurrentPosition() + (int)(TopLeftInches * COUNTS_PER_INCH);
+            newBackLeftTarget = backLeftMotor.getCurrentPosition() + (int)(BackLeftInches * COUNTS_PER_INCH);
+            newFrontRightTarget = frontRightMotor.getCurrentPosition() + (int)(TopRightInches * COUNTS_PER_INCH);
+            newBackRightTarget = backRightMotor.getCurrentPosition() + (int)(BackRightInches * COUNTS_PER_INCH);
             frontLeftMotor.setTargetPosition(newFrontLeftTarget);
             frontRightMotor.setTargetPosition(newFrontRightTarget);
             backRightMotor.setTargetPosition(newBackRightTarget);
