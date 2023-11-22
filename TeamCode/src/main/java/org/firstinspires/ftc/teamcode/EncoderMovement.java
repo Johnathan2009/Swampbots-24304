@@ -76,11 +76,9 @@ public class EncoderMovement extends LinearOpMode {
         moveForward(33, fast);
         turnClockwise(-45, fast);
         moveForward(24, fast);
-        moveToLine(24, medium);
         moveForward(-6, fast);
         turnClockwise(-3, medium); // aiming tweak
         moveRight(36, fast);
-        moveToLine(24, medium);
         moveForward(-12, fast);
         turnClockwise(-135, fast);
         moveForward(66, fast);
@@ -234,47 +232,6 @@ public class EncoderMovement extends LinearOpMode {
         rightRearMotor.setPower(0);
     }
 
-    private void moveToLine(int howMuch, double speed) {
-        // howMuch is in inches. The robot will stop if the line is found before
-        // this distance is reached. A negative howMuch moves left, positive moves right.
 
-        // fetch motor positions
-        lfPos = leftFrontMotor.getCurrentPosition();
-        rfPos = rightFrontMotor.getCurrentPosition();
-        lrPos = leftRearMotor.getCurrentPosition();
-        rrPos = rightRearMotor.getCurrentPosition();
-
-        // calculate new targets
-        lfPos += howMuch * clicksPerInch;
-        rfPos -= howMuch * clicksPerInch;
-        lrPos -= howMuch * clicksPerInch;
-        rrPos += howMuch * clicksPerInch;
-
-        // move robot to new position
-        leftFrontMotor.setTargetPosition(lfPos);
-        rightFrontMotor.setTargetPosition(rfPos);
-        leftRearMotor.setTargetPosition(lrPos);
-        rightRearMotor.setTargetPosition(rrPos);
-        leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftFrontMotor.setPower(speed);
-        rightFrontMotor.setPower(speed);
-        leftRearMotor.setPower(speed);
-        rightRearMotor.setPower(speed);
-
-        // wait for move to complete
-        while (leftFrontMotor.isBusy() && rightFrontMotor.isBusy() &&
-                leftRearMotor.isBusy() && rightRearMotor.isBusy()) {
-
-
-            // Stop all motion;
-            leftFrontMotor.setPower(0);
-            rightFrontMotor.setPower(0);
-            leftRearMotor.setPower(0);
-            rightRearMotor.setPower(0);
-
-        }
-    }
 }
+
