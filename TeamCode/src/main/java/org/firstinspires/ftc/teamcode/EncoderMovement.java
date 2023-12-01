@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
  */
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -17,7 +18,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  *
  */
 @Autonomous()  // @TeleOp(...) is the other common choice
-// @Disabled
+
 public class EncoderMovement extends LinearOpMode {
 
     // Declare Devices
@@ -37,8 +38,8 @@ public class EncoderMovement extends LinearOpMode {
     private double fast = 0.5; // Limit motor power to this value for Andymark RUN_USING_ENCODER mode
     private double medium = 0.3; // medium speed
     private double slow = 0.1; // slow speed
-    private double clicksPerInch = 87.5; // empirically measured
-    private double clicksPerDeg = 21.94; // empirically measured
+    private double clicksPerInch = 12.5; // empirically measured
+    private double clicksPerDeg = 3.94; // empirically measured
     private double lineThreshold = 0.7; // floor should be below this value, line above
     private double redThreshold = 1.9; // red should be below this value, blue above
 
@@ -234,4 +235,3 @@ public class EncoderMovement extends LinearOpMode {
 
 
 }
-
