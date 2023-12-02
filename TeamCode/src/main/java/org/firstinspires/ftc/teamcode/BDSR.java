@@ -66,7 +66,6 @@ public class BDSR extends LinearOpMode {
         leftRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
@@ -159,9 +158,9 @@ public class BDSR extends LinearOpMode {
         rightRearMotor.setPower(speed);
 
         // wait for move to complete
-        while (leftFrontMotor.isBusy() && rightFrontMotor.isBusy() &&
+        while (opModeIsActive() && leftFrontMotor.isBusy() && rightFrontMotor.isBusy() &&
                 leftRearMotor.isBusy() && rightRearMotor.isBusy()) {
-
+            idle();
             // Display it for the driver.
             telemetry.addLine("Strafe Right");
             telemetry.addData("Target", "%7d :%7d", lfPos, rfPos, lrPos, rrPos);
