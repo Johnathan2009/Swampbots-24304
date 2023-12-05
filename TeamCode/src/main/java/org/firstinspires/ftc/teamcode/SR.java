@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 @Autonomous()  // @TeleOp(...) is the other common choice
 
-public class BDSR extends LinearOpMode {
+public class SR extends LinearOpMode {
 
     // Declare Devices
     DcMotor leftFrontMotor = null;
@@ -40,8 +40,7 @@ public class BDSR extends LinearOpMode {
     private double slow = 0.1; // slow speed
     private double clicksPerInch = 12.5; // empirically measured
     private double clicksPerDeg = 3.94; // empirically measured
-    private double lineThreshold = 0.7; // floor should be below this value, line above
-    private double redThreshold = 1.9; // red should be below this value, blue above
+
 
     @Override
     public void runOpMode() {
@@ -158,9 +157,8 @@ public class BDSR extends LinearOpMode {
         rightRearMotor.setPower(speed);
 
         // wait for move to complete
-        while (opModeIsActive() && leftFrontMotor.isBusy() && rightFrontMotor.isBusy() &&
+        while (leftFrontMotor.isBusy() && rightFrontMotor.isBusy() &&
                 leftRearMotor.isBusy() && rightRearMotor.isBusy()) {
-            idle();
             // Display it for the driver.
             telemetry.addLine("Strafe Right");
             telemetry.addData("Target", "%7d :%7d", lfPos, rfPos, lrPos, rrPos);
