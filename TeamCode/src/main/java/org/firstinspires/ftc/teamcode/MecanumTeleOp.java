@@ -57,13 +57,18 @@ public class MecanumTeleOp extends LinearOpMode {
             }
             if (gamepad1.right_trigger > 0.1) {
 
-               liftMotor.setPower(-0.1);
+               liftMotor.setPower(-0.7);
                    }
-                if (gamepad1.right_bumper == true) {
+            else if(gamepad1.right_bumper == true) {
 
-                liftMotor.setPower(0.1);
+                liftMotor.setPower(0.7);
 
                 }
+            else {
+                liftMotor.setPower(0);
+            }
+
+
                 Launcher.setPosition(LaunchServoPos);
 
                 telemetry.addData("FrontRight:", frontRightMotor.getPower());
@@ -71,7 +76,6 @@ public class MecanumTeleOp extends LinearOpMode {
                 telemetry.addData("BackRight:", backRightMotor.getPower());
                 telemetry.addData("BackLeft:", backLeftMotor.getPower());
                 telemetry.addData("Slowmode:", SlowMode);
-                telemetry.addData("Lift", liftMotor.getCurrentPosition());
                 telemetry.update();
             }
         }
