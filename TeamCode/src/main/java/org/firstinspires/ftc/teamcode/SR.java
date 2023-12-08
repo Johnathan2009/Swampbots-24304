@@ -38,8 +38,8 @@ public class SR extends LinearOpMode {
     private double fast = 0.5; // Limit motor power to this value for Andymark RUN_USING_ENCODER mode
     private double medium = 0.3; // medium speed
     private double slow = 0.1; // slow speed
-    private double clicksPerInch = 12.5; // empirically measured
-    private double clicksPerDeg = 3.94; // empirically measured
+    private double clicksPerInch = 29; // empirically measured
+    private double clicksPerDeg = 9.94; // empirically measured
 
 
     @Override
