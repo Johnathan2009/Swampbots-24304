@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static com.qualcomm.robotcore.hardware.DcMotor.*;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -16,10 +18,17 @@ public class MecanumTeleOp extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
         DcMotor liftMotor = hardwareMap.dcMotor.get("liftMotor");
+        DcMotor liftLeft = hardwareMap.dcMotor.get("liftLeft");
+        DcMotor liftRight = hardwareMap.dcMotor.get("liftRight");
         Servo Launcher = hardwareMap.get(Servo.class, "Launcher");
         DcMotor Intake = hardwareMap.dcMotor.get("intake");
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftRight.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
         waitForStart();
@@ -55,26 +64,37 @@ public class MecanumTeleOp extends LinearOpMode {
             } else {
                 Intake.setPower(0);
             }
-            if (gamepad1.right_trigger > 0.1) {
+            if (gamepad1.right_trigger > 0.1 && liftMotor.getCurrentPosition() > 0) {
 
-               liftMotor.setPower(-0.7);
+               liftMotor.setPower(-0.5);
                    }
-            else if(gamepad1.right_bumper == true) {
+            else if(gamepad1.right_bumper == true && liftMotor.getCurrentPosition() < 4200) {
 
-                liftMotor.setPower(0.7);
+                liftMotor.setPower(0.5);
 
                 }
             else {
                 liftMotor.setPower(0);
             }
-
-
+            if (gamepad1.dpad_up == true) {
+                liftLeft.setPower(1);
+                liftRight.setPower(1);
+            }else if(gamepad1.dpad_down == true){
+                liftRight.setPower(-1);
+                liftLeft.setPower(-1);
+            }else {
+            liftRight.setPower(0);
+            liftLeft.setPower(0);
+            }
                 Launcher.setPosition(LaunchServoPos);
 
                 telemetry.addData("FrontRight:", frontRightMotor.getPower());
                 telemetry.addData("FrontLeft:", frontLeftMotor.getPower());
                 telemetry.addData("BackRight:", backRightMotor.getPower());
                 telemetry.addData("BackLeft:", backLeftMotor.getPower());
+            telemetry.addData("LiftPos:", liftMotor.getCurrentPosition());
+            telemetry.addData("ISWORKING", gamepad1.dpad_up);
+            telemetry.addData("ISWORKING", gamepad1.dpad_down);
                 telemetry.addData("Slowmode:", SlowMode);
                 telemetry.update();
             }
