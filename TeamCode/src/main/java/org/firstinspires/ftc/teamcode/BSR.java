@@ -12,7 +12,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Team 9960 Revision 170119.0
  * This program is the scaffold for autonomous operation.
  * Designed to push the correct button on both beacons
- *
  * This robot uses four VEX Mecanum wheels, each direct driven by Neverest 40 motors.
  * It is designed as a linear op mode, and uses RUN_TO_POSITION motor operation.
  *
@@ -38,8 +37,8 @@ public class BSR extends LinearOpMode {
     private double fast = 0.5; // Limit motor power to this value for Andymark RUN_USING_ENCODER mode
     private double medium = 0.3; // medium speed
     private double slow = 0.1; // slow speed
-    private double clicksPerInch = 29; // empirically measured
-    private double clicksPerDeg = 9.94; // empirically measured
+    private double clicksPerInch = 35; // empirically measured
+    private double clicksPerDeg = 9.8; // empirically measured
 
 
     @Override
@@ -54,10 +53,10 @@ public class BSR extends LinearOpMode {
         rightRearMotor = hardwareMap.dcMotor.get("backRightMotor");
 
         // The right motors need reversing
-        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
 
         // Set the drive motor run modes:
         leftFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -70,12 +69,7 @@ public class BSR extends LinearOpMode {
 
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg, speed 0.0 to 0.6
-        moveRight(-73, medium);
-        moveForward(73, medium);
-        moveRight(73, medium);
-        moveForward(-73, medium);
-        turnClockwise(90, medium);
-        turnClockwise(-90, medium);
+        moveRight(35, medium);  //24inch = 1 square
     }
 
     private void moveForward(int howMuch, double speed) {
@@ -224,6 +218,5 @@ public class BSR extends LinearOpMode {
         leftRearMotor.setPower(0);
         rightRearMotor.setPower(0);
     }
-
 
 }
