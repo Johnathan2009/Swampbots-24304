@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 /**
@@ -38,8 +39,8 @@ public class BSB extends LinearOpMode {
     private double fast = 0.5; // Limit motor power to this value for Andymark RUN_USING_ENCODER mode
     private double medium = 0.3; // medium speed
     private double slow = 0.1; // slow speed
-    private double clicksPerInch = 29; // empirically measured
-    private double clicksPerDeg = 9.94; // empirically measured
+    private double clicksPerInch = 35; // empirically measured
+    private double clicksPerDeg = 9.8; // empirically measured
 
 
     @Override
@@ -54,10 +55,10 @@ public class BSB extends LinearOpMode {
         rightRearMotor = hardwareMap.dcMotor.get("backRightMotor");
 
         // The right motors need reversing
-        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
 
         // Set the drive motor run modes:
         leftFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -70,12 +71,8 @@ public class BSB extends LinearOpMode {
 
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg, speed 0.0 to 0.6
-        moveRight(-73, medium);
-        moveForward(73, medium);
-        moveRight(73, medium);
-        moveForward(-73, medium);
-        turnClockwise(90, medium);
-        turnClockwise(-90, medium);
+        moveRight(-35, medium);
+
     }
 
     private void moveForward(int howMuch, double speed) {
@@ -224,6 +221,5 @@ public class BSB extends LinearOpMode {
         leftRearMotor.setPower(0);
         rightRearMotor.setPower(0);
     }
-
 
 }
