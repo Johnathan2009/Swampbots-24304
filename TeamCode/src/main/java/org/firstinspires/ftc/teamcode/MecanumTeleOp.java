@@ -69,7 +69,7 @@ public class MecanumTeleOp extends LinearOpMode {  //creates the mecanum teleOp 
             if (gamepad1.right_trigger > 0.1) {  //detects whether the power of the right trigger is greater than 0.1 and the arm lift motor's position is greater than 0
            if(liftMotor.getCurrentPosition() > 500) {
                liftMotor.setPower(-0.5);  //sets the power to lower the arm
-           } else if(liftMotor.getCurrentPosition() < 500 && liftMotor.getCurrentPosition() > 20) {
+           } else if(liftMotor.getCurrentPosition() < 500 && liftMotor.getCurrentPosition() > 100) {
                liftMotor.setPower(-0.2);
            }
             } else if(gamepad1.right_bumper && liftMotor.getCurrentPosition() < 4200) {  //detects whether the right bumper was pressed and the arm lift motor's position is less than 4200
