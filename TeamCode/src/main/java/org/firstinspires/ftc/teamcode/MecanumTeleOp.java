@@ -17,8 +17,7 @@ public class MecanumTeleOp extends LinearOpMode {  //creates the mecanum teleOp 
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");  //Calls the front right motor from configuration
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");  //Calls the back right motor from configuration
         DcMotor liftMotor = hardwareMap.dcMotor.get("liftMotor");  //Calls the arm lift motor from configuration
-        DcMotor liftLeft = hardwareMap.dcMotor.get("liftLeft");  //Calls the left lift climb motor from configuration
-        DcMotor liftRight = hardwareMap.dcMotor.get("liftRight");  //Calls the right lift climb motor from configuration
+        DcMotor slideMotor = hardwareMap.dcMotor.get("slideMotor");  //Calls the slide motor from configuration
         DcMotor Intake = hardwareMap.dcMotor.get("intake");  //Calls the intake motor from configuration
 
         Servo Launcher = hardwareMap.get(Servo.class, "Launcher");  //Calls the launcher Servo from configuration
@@ -26,8 +25,7 @@ public class MecanumTeleOp extends LinearOpMode {  //creates the mecanum teleOp 
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);  //sets the front left motor to reverse when going forward
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);  //sets the back left motor to reverse when going forward
-        liftLeft.setDirection(DcMotorSimple.Direction.REVERSE);  //sets left lift motor to reverse when going forward
-        liftRight.setDirection(DcMotorSimple.Direction.FORWARD);  //sets right lift motor to forward when going forward
+        slideMotor.setDirection(DcMotorSimple.Direction.FORWARD);  //sets slide motor to forward when going forward
 
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);  //allows the motor to hold position when there is zero power on that motor
 
@@ -70,25 +68,20 @@ public class MecanumTeleOp extends LinearOpMode {  //creates the mecanum teleOp 
                liftMotor.setPower(-0.5);  //sets the power to lower the arm
             } else if(gamepad1.right_bumper && liftMotor.getCurrentPosition() < 4200) {  //detects whether the right bumper was pressed and the arm lift motor's position is less than 4200
                 liftMotor.setPower(0.5);  //sets the power to raise the arm
-                liftLeft.setPower(-0.4);  //sets the left lift to unravel
-                liftRight.setPower(-0.4);  //sets the right lift to unravel
                 }
             else {  //runs if the conditions met on the previous if statements were not met
                 liftMotor.setPower(0);  //sets the arm lift motor to not move
             }
 
             if (gamepad1.dpad_up) {  //detects whether the dpad up is pressed
-                liftLeft.setPower(1);  //sets the left lift to pull up
-                liftRight.setPower(1);  //sets the right lift to pull up
+                slideMotor.setPower(1);  //sets the slide motor to pull up
 
-                liftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);  //allows the left lift motor to hold position when the power is 0
-                liftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);  //allows the right lift motor to hold position when the power is 0
+                slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);  //allows the slide motor to hold position when the power is 0
+
             }else if(gamepad1.dpad_down){  //detects whether the dpad down is pressed
-                liftLeft.setPower(-0.4);  //sets the left lift to drop slowly for fine tuning
-                liftRight.setPower(-0.4);  //sets the right lift to drop slowly for fine tuning
+                slideMotor.setPower(-0.4);  //sets the slide motor to drop slowly for fine tuning
             }else {  //runs if the previous if statements are not met
-            liftRight.setPower(0);  //sets the right lift motor to do nothing
-            liftLeft.setPower(0);  //sets the left lift motor to do nothing
+            slideMotor.setPower(0);  //sets the slide motor to do nothing
             }
 
             Launcher.setPosition(LaunchServoPos);  //sets the launcher servo's position to the launch servo pos variable
