@@ -137,9 +137,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
             // calculate new targets
             lfPos += howMuch * clicksPerInch;
-            rfPos -= howMuch * clicksPerInch;
+            rfPos += howMuch * clicksPerInch;
             lrPos -= howMuch * clicksPerInch;
-            rrPos += howMuch * clicksPerInch;
+            rrPos -= howMuch * clicksPerInch;
 
             // move robot to new position
             leftFrontMotor.setTargetPosition(lfPos);
