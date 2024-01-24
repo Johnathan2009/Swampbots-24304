@@ -8,10 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;  //Imports the Servo class
 
 @TeleOp  //Tells you what mode this extends, and allows you to call it on the driver station
 public class MecanumTeleOp extends LinearOpMode {  //creates the mecanum teleOp class. It is a sub class of LinearOpMode, as it extends the class
-
-    @Override  //Overrides certain code
     public void runOpMode() throws InterruptedException {  //creates a method that runs op mode. Does not catch the interrupted exception error
-
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");  //Calls the front left motor from configuration
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");  //Calls the back left motor from configuration
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");  //Calls the front right motor from configuration
@@ -19,12 +16,13 @@ public class MecanumTeleOp extends LinearOpMode {  //creates the mecanum teleOp 
         DcMotor liftMotor = hardwareMap.dcMotor.get("liftMotor");  //Calls the arm lift motor from configuration
         DcMotor slideMotor = hardwareMap.dcMotor.get("slideMotor");  //Calls the slide motor from configuration
         DcMotor Intake = hardwareMap.dcMotor.get("intake");  //Calls the intake motor from configuration
-
         Servo Launcher = hardwareMap.get(Servo.class, "Launcher");  //Calls the launcher Servo from configuration
         double LaunchServoPos = 0.55;  //Creates a variable that can get and change the position of the servo anywhere in the code
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);  //sets the front left motor to reverse when going forward
+        frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);  //sets the back left motor to reverse when going forward
+        backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);  //sets lift motor to forward when going forward
 
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);  //allows the motor to hold position when there is zero power on that motor
@@ -36,16 +34,16 @@ public class MecanumTeleOp extends LinearOpMode {  //creates the mecanum teleOp 
         while (opModeIsActive()) {  //while the op mode is running, do this
 
             double y = -gamepad1.left_stick_y;  //creates a number when we use the y position of the left joystick, y value must be reversed, as indicated by the -
-            double x = gamepad1.left_stick_x * 1.1;  //creates a number when we use the x position of the left joystick, the * 1.1 counteracts imperfect strafing
-            double turn = gamepad1.right_stick_x;  //creates a number when we use the x position of the right joystick
+            double x = gamepad1.left_stick_x;  //creates a number when we use the x position of the left joystick, the * 1.1 counteracts imperfect strafing
+            double turn = gamepad1.right_stick_x * 1.1;  //creates a number when we use the x position of the right joystick
             double SlowMode = 1 - gamepad1.left_trigger * 0.8;  //creates a number that reads the left triggers number, and multiplies it by 0.8, the lowest number possible is 0.2
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(turn), 1);  //creates a number that will divide the motors so the power doesn't exceed 1
 
             double frontLeftPower = (y + x + turn) / denominator;  //creates the power we need to go for the front left motor mecanum wheel.
             double backLeftPower = (y - x + turn) / denominator;  //creates the power we need to go for the back left motor mecanum wheel.
-            double frontRightPower = (y - x - turn) / denominator;  //creates the power we need to go for the front right motor mecanum wheel.
-            double backRightPower = (y + x - turn) / denominator;  //creates the power we need to go for the back right motor mecanum wheel.
+            double frontRightPower = (y + x - turn) / denominator;  //creates the power we need to go for the front right motor mecanum wheel.
+            double backRightPower = (y - x - turn) / denominator;  //creates the power we need to go for the back right motor mecanum wheel.
 
             frontLeftMotor.setPower(frontLeftPower * SlowMode);  //sets the power of the front left motor and multiplies it by slow mode
             backLeftMotor.setPower(backLeftPower * SlowMode);  //sets the power of the back left motor and multiplies it by slow mode
@@ -57,19 +55,18 @@ public class MecanumTeleOp extends LinearOpMode {  //creates the mecanum teleOp 
             }
 
             if (gamepad1.y) {  //detects whether y was pressed on game pad 1
-                Intake.setPower(1);  //sets the intake to shoot pixels out
+                Intake.setPower(0.5);  //sets the intake to shoot pixels out
             } else if (gamepad1.b) {  //detects whether b was pressed on game pad 1 if y was not pressed
-                Intake.setPower(-0.5);  //sets the intake to take pixels in
+                Intake.setPower(-1);  //sets the intake to take pixels in
             } else {  //runs if the conditions met on the previous if statements were not met
                 Intake.setPower(0);  //sets the intake to do nothing
             }
 
             if (gamepad1.right_trigger > 0.1 && slideMotor.getCurrentPosition() > 250) {  //detects whether the power of the right trigger is greater than 0.1 and the slide motor's position is greater than 0
-               slideMotor.setPower(-0.5);  //sets the power to lower the arm
-            } else if(gamepad1.right_bumper && slideMotor.getCurrentPosition() < 4200) {  //detects whether the right bumper was pressed and the slide motor's position is less than 4200
-                slideMotor.setPower(0.5);  //sets the power to raise the arm
-                }
-            else {  //runs if the conditions met on the previous if statements were not met
+                slideMotor.setPower(-0.5);  //sets the power to lower the arm
+            } else if (gamepad1.right_bumper && slideMotor.getCurrentPosition() < 4200) {  //detects whether the right bumper was pressed and the slide motor's position is less than 4200
+                slideMotor.setPower(0.6);  //sets the power to raise the arm
+            } else {  //runs if the conditions met on the previous if statements were not met
                 slideMotor.setPower(0);  //sets the arm slide motor to not move
             }
 
@@ -78,10 +75,10 @@ public class MecanumTeleOp extends LinearOpMode {  //creates the mecanum teleOp 
 
                 liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);  //allows the lift motor to hold position when the power is 0
 
-            }else if(gamepad1.dpad_down){  //detects whether the dpad down is pressed
-                liftMotor.setPower(-0.4);  //sets the lift motor to drop slowly for fine tuning
-            }else {  //runs if the previous if statements are not met
-            liftMotor.setPower(0);  //sets the lift motor to do nothing
+            } else if (gamepad1.dpad_down) {  //detects whether the dpad down is pressed
+                liftMotor.setPower(-0.6);  //sets the lift motor to drop slowly for fine tuning
+            } else {  //runs if the previous if statements are not met
+                liftMotor.setPower(0);  //sets the lift motor to do nothing
             }
 
             Launcher.setPosition(LaunchServoPos);  //sets the launcher servo's position to the launch servo pos variable
@@ -93,8 +90,7 @@ public class MecanumTeleOp extends LinearOpMode {  //creates the mecanum teleOp 
             telemetry.addData("SlidePos:", slideMotor.getCurrentPosition());  //adds a line of data that gets the slide motor's current position
             telemetry.addData("IS WORKING", gamepad1.dpad_up);  //adds a line of data the tells you whether the dpad up is pressed
             telemetry.addData("Slow mode:", SlowMode);  //adds a line of data telling you the slow mode's variable number
-
-            telemetry.update();  //updates the telemetry every time this code is read.
+            telemetry.update();  //This code updates the telemetry class.  Basically, this means every single time the code runs through the while loop, this code will be refreshed into a new output, or updated from the previous.
         }
     }
 }
