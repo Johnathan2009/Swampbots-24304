@@ -6,6 +6,7 @@ package org.firstinspires.ftc.teamcode;
         import com.qualcomm.robotcore.eventloop.opmode.Disabled;
         import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
         import com.qualcomm.robotcore.hardware.DcMotor;
+        import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 
 /**
@@ -40,6 +41,7 @@ public class FSB extends LinearOpMode {
     private double slow = 0.1; // slow speed
     private double clicksPerInch = 35; // empirically measured
     private double clicksPerDeg = 9.8; // empirically measured
+   // DcMotorEx rightRearMotor,leftRearMotor,leftFrontMotor,rightFrontMotor;
 
 
     @Override
@@ -59,6 +61,11 @@ public class FSB extends LinearOpMode {
         rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
         leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
 
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         // Set the drive motor run modes:
         leftFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -70,6 +77,7 @@ public class FSB extends LinearOpMode {
 
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg, speed 0.0 to 0.6
+
         moveRight(16, slow);
         sleep(1000);
         moveForward(108, medium);
@@ -110,11 +118,17 @@ public class FSB extends LinearOpMode {
                 leftRearMotor.isBusy() && rightRearMotor.isBusy()) {
 
             // Display it for the driver.
-            telemetry.addLine("Move Foward");
+            telemetry.addLine("Move Forward");
             telemetry.addData("Target", "%7d :%7d", lfPos, rfPos, lrPos, rrPos);
-            telemetry.addData("Actual", "%7d :%7d", leftFrontMotor.getCurrentPosition(),
-                    rightFrontMotor.getCurrentPosition(), leftRearMotor.getCurrentPosition(),
-                    rightRearMotor.getCurrentPosition());
+            telemetry.addData("LF",leftFrontMotor.getCurrentPosition());
+            telemetry.addData("RF",rightFrontMotor.getCurrentPosition());
+            telemetry.addData("LR",leftRearMotor.getCurrentPosition());
+            telemetry.addData("RR",rightRearMotor.getCurrentPosition());
+            telemetry.addData("LFSpeed:", leftFrontMotor.getPower());
+            telemetry.addData("LRSpeed:", leftRearMotor.getPower());
+            telemetry.addData("RFSpeed:", rightFrontMotor.getPower());
+            telemetry.addData("RRSpeed:", rightRearMotor.getPower());
+
             telemetry.update();
         }
 
@@ -136,9 +150,9 @@ public class FSB extends LinearOpMode {
 
         // calculate new targets
         lfPos += howMuch * clicksPerInch;
-        rfPos -= howMuch * clicksPerInch;
+        rfPos += howMuch * clicksPerInch;
         lrPos -= howMuch * clicksPerInch;
-        rrPos += howMuch * clicksPerInch;
+        rrPos -= howMuch * clicksPerInch;
 
         // move robot to new position
         leftFrontMotor.setTargetPosition(lfPos);
@@ -163,6 +177,10 @@ public class FSB extends LinearOpMode {
             telemetry.addData("Actual", "%7d :%7d", leftFrontMotor.getCurrentPosition(),
                     rightFrontMotor.getCurrentPosition(), leftRearMotor.getCurrentPosition(),
                     rightRearMotor.getCurrentPosition());
+            telemetry.addData("LFSpeed:", leftFrontMotor.getPower());
+            telemetry.addData("LRSpeed:", leftRearMotor.getPower());
+            telemetry.addData("RFSpeed:", rightFrontMotor.getPower());
+            telemetry.addData("RRSpeed:", rightRearMotor.getPower());
             telemetry.update();
         }
 
