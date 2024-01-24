@@ -14,7 +14,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-// Credits to team 7303 RoboAvatars, adjusted by team 3954 Pink to the Future
+
 
 public class ContourPipelineRed extends OpenCvPipeline {
     Scalar RED = new Scalar(196, 255, 0);
