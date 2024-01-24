@@ -14,14 +14,14 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-// Credits to team 7303 RoboAvatars, adjusted by team 3954 Pink to the Future
 
-public class ContourPipelineBlue extends OpenCvPipeline {
-    Scalar BLUE = new Scalar(196, 0, 255);
 
-    // Pink, the default color                         Y      Cr     Cb    (Do not change Y)
-    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 150.0, 120.0);
-    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
+public class ContourPipelineBlue extends OpenCvPipeline {  //Our class.  Extends OpenCvPipeline
+    Scalar BLUE = new Scalar(196, 0, 255);//Sets a YRB value for the color.  Since this is blue, it is 0 red 255 blue
+
+    //                     Y      Cr     Cb    (Do not change Y)
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 150.0, 120.0);  //Creates a lower value for detection
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);  //Creates a higher value for detection
 
     // Yellow, freight or ducks!
     //public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
@@ -35,60 +35,60 @@ public class ContourPipelineBlue extends OpenCvPipeline {
     // Note that the Cr and Cb values range between 0-255. this means that the origin of the coordinate system is (128,128)
 
     // Volatile because accessed by OpMode without sync
-    public volatile boolean error = false;
-    public volatile Exception debug;
+    public volatile boolean error = false;  //Creates a value that is set to true when something goes wrong, and displays an error
+    public volatile Exception debug;  //Creates an exception for errors
 
     private double borderLeftX;     //fraction of pixels from the left side of the cam to skip
     private double borderRightX;    //fraction of pixels from the right of the cam to skip
     private double borderTopY;      //fraction of pixels from the top of the cam to skip
     private double borderBottomY;   //fraction of pixels from the bottom of the cam to skip
 
-    private int CAMERA_WIDTH;
-    private int CAMERA_HEIGHT;
+    private int CAMERA_WIDTH;  // the width of the Camera
+    private int CAMERA_HEIGHT;  // the length of the Camera
 
     private int loopCounter = 0;
     private int pLoopCounter = 0;
 
-    private final Mat mat = new Mat();
-    private final Mat processed = new Mat();
+    private final Mat mat = new Mat();  //Creates a Matrix value
+    private final Mat processed = new Mat();  //Creates another Matrix value
 
-    private Rect maxRect = new Rect(600,1,1,1);
+    private Rect maxRect = new Rect(600,1,1,1);  //Creates a Rect
 
-    private double maxArea = 0;
+    private double maxArea = 0;  //Sets the maximum area
     private boolean first = false;
 
-    private final Object sync = new Object();
+    private final Object sync = new Object();  //Creates an Object
 
-    public ContourPipelineBlue(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
-        this.borderLeftX = borderLeftX;
-        this.borderRightX = borderRightX;
-        this.borderTopY = borderTopY;
-        this.borderBottomY = borderBottomY;
+    public ContourPipelineBlue(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {  //Creates a method called ContourPipelineBlue that ties directly to the class(forgot what it was called but I think it is a Constructor method) and grabs the boarder variables
+        this.borderLeftX = borderLeftX;  //Sets the boarder in the method to the variable initialized at the start
+        this.borderRightX = borderRightX;  //Sets the boarder in the method to the variable initialized at the start
+        this.borderTopY = borderTopY;  //Sets the boarder in the method to the variable initialized at the start
+        this.borderBottomY = borderBottomY;  //Sets the boarder in the method to the variable initialized at the start
     }
-    public void configureScalarLower(double y, double cr, double cb) {
-        scalarLowerYCrCb = new Scalar(y, cr, cb);
+    public void configureScalarLower(double y, double cr, double cb) {  //Creates a method that configures the lower values
+        scalarLowerYCrCb = new Scalar(y, cr, cb);  //creates a scalar that grabs the lower values initialized from the method
     }
-    public void configureScalarUpper(double y, double cr, double cb) {
-        scalarUpperYCrCb = new Scalar(y, cr, cb);
+    public void configureScalarUpper(double y, double cr, double cb) {  //Creates a method that configures the upper values
+        scalarUpperYCrCb = new Scalar(y, cr, cb);  //creates a scalar that grabs the upper values initialized from the method
     }
-    public void configureScalarLower(int y, int cr, int cb) {
-        scalarLowerYCrCb = new Scalar(y, cr, cb);
+    public void configureScalarLower(int y, int cr, int cb) {  //Grabs int values instead of double values
+        scalarLowerYCrCb = new Scalar(y, cr, cb);  //Grabs int values instead of double values
     }
-    public void configureScalarUpper(int y, int cr, int cb) {
-        scalarUpperYCrCb = new Scalar(y, cr, cb);
+    public void configureScalarUpper(int y, int cr, int cb) {  //Grabs int values instead of double values
+        scalarUpperYCrCb = new Scalar(y, cr, cb);  //Grabs int values instead of double values
     }
-    public void configureBorders(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
-        this.borderLeftX = borderLeftX;
-        this.borderRightX = borderRightX;
-        this.borderTopY = borderTopY;
-        this.borderBottomY = borderBottomY;
+    public void configureBorders(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {  //Creates a method that configures the boarders
+        this.borderLeftX = borderLeftX;  //Configures a boarder
+        this.borderRightX = borderRightX;  //Configures a boarder
+        this.borderTopY = borderTopY;  //Configures a boarder
+        this.borderBottomY = borderBottomY;  //Configures a boarder
     }
 
-    @Override
-    public Mat processFrame(Mat input) {
-        CAMERA_WIDTH = input.width();
-        CAMERA_HEIGHT = input.height();
-        try {
+    @Override  //Overrides certain code
+    public Mat processFrame(Mat input) {  //Creates a public Matrix method that awaits a Matrix input.
+        CAMERA_WIDTH = input.width();  //Grabs the inputs width and sets it to the Camera Width
+        CAMERA_HEIGHT = input.height();  //Grabs the inputs height and sets it to the Camera Height
+        try {  //Creates a try method to try and catch certain errors
             // Process Image
             Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2YCrCb);
             Core.inRange(mat, scalarLowerYCrCb, scalarUpperYCrCb, processed);
