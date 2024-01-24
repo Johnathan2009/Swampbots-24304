@@ -14,9 +14,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config //Disable if not using FTC Dashboard https://github.com/PinkToTheFuture/OpenCV_FreightFrenzy_2021-2022#opencv_freightfrenzy_2021-2022
-@Autonomous
+@Autonomous  //Sets the opMode to Autonomous
 
-public class OpenCVTeamElementBlue extends LinearOpMode {
+public class OpenCVTeamElementBlue extends LinearOpMode {  //our class.  Extends LinearOpMode
     private OpenCvCamera webcam;
 
     EncoderMovement encoderMovement = new EncoderMovement();
@@ -43,9 +43,11 @@ public class OpenCVTeamElementBlue extends LinearOpMode {
     public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 160.0, 100.0);
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
-    // Yellow Range
-//    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
-//    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 170.0, 120.0);
+    /*
+ Yellow Range
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 170.0, 120.0);
+*/
 
     @Override
     public void runOpMode()
@@ -142,14 +144,14 @@ public class OpenCVTeamElementBlue extends LinearOpMode {
     }
     public void AUTONOMOUS_A(){
         telemetry.addLine("Autonomous A");
-        encoderMovement.encoderDrive(encoderMovement.DRIVE_SPEED,22,0,1.0);
+     //   encoderMovement.encoderDrive(encoderMovement.DRIVE_SPEED,22,0,1.0);
     }
     public void AUTONOMOUS_B(){
         telemetry.addLine("Autonomous B");
-        encoderMovement.encoderDrive(encoderMovement.DRIVE_SPEED,22,22,1.0);
+    //    encoderMovement.encoderDrive(encoderMovement.DRIVE_SPEED,22,22,1.0);
     }
     public void AUTONOMOUS_C(){
         telemetry.addLine("Autonomous C");
-        encoderMovement.encoderDrive(encoderMovement.DRIVE_SPEED,0,22,1.0);
+      //  encoderMovement.encoderDrive(encoderMovement.DRIVE_SPEED,0,22,1.0);
     }
 }
