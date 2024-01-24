@@ -106,11 +106,15 @@ public class BSR extends LinearOpMode {
                 leftRearMotor.isBusy() && rightRearMotor.isBusy()) {
 
             // Display it for the driver.
-            telemetry.addLine("Move Foward");
+            telemetry.addLine("Move Forward");
             telemetry.addData("Target", "%7d :%7d", lfPos, rfPos, lrPos, rrPos);
             telemetry.addData("Actual", "%7d :%7d", leftFrontMotor.getCurrentPosition(),
                     rightFrontMotor.getCurrentPosition(), leftRearMotor.getCurrentPosition(),
                     rightRearMotor.getCurrentPosition());
+            telemetry.addData("LFSpeed:", leftFrontMotor.getPower());
+            telemetry.addData("LRSpeed:", leftRearMotor.getPower());
+            telemetry.addData("RFSpeed:", rightFrontMotor.getPower());
+            telemetry.addData("RRSpeed:", rightRearMotor.getPower());
             telemetry.update();
         }
 
@@ -132,9 +136,9 @@ public class BSR extends LinearOpMode {
 
         // calculate new targets
         lfPos += howMuch * clicksPerInch;
-        rfPos -= howMuch * clicksPerInch;
+        rfPos += howMuch * clicksPerInch;
         lrPos -= howMuch * clicksPerInch;
-        rrPos += howMuch * clicksPerInch;
+        rrPos -= howMuch * clicksPerInch;
 
         // move robot to new position
         leftFrontMotor.setTargetPosition(lfPos);
@@ -159,6 +163,10 @@ public class BSR extends LinearOpMode {
             telemetry.addData("Actual", "%7d :%7d", leftFrontMotor.getCurrentPosition(),
                     rightFrontMotor.getCurrentPosition(), leftRearMotor.getCurrentPosition(),
                     rightRearMotor.getCurrentPosition());
+            telemetry.addData("LFSpeed:", leftFrontMotor.getPower());
+            telemetry.addData("LRSpeed:", leftRearMotor.getPower());
+            telemetry.addData("RFSpeed:", rightFrontMotor.getPower());
+            telemetry.addData("RRSpeed:", rightRearMotor.getPower());
             telemetry.update();
         }
 
