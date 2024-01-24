@@ -3,20 +3,11 @@ package org.firstinspires.ftc.teamcode;
  */
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-/**
- * Team 9960 Revision 170119.0
- * This program is the scaffold for autonomous operation.
- * Designed to push the correct button on both beacons
- *
- * This robot uses four VEX Mecanum wheels, each direct driven by Neverest 40 motors.
- * It is designed as a linear op mode, and uses RUN_TO_POSITION motor operation.
- *
- */
+
 @Autonomous()  // @TeleOp(...) is the other common choice
 
 public class EncoderMovement extends LinearOpMode {
@@ -35,13 +26,11 @@ public class EncoderMovement extends LinearOpMode {
     private int rrPos;
 
     // operational constants
-    private double fast = 0.5; // Limit motor power to this value for Andymark RUN_USING_ENCODER mode
-    private double medium = 0.3; // medium speed
-    private double slow = 0.1; // slow speed
-    private double clicksPerInch = 29; // empirically measured
-    private double clicksPerDeg = 9.94; // empirically measured
-    private double lineThreshold = 0.7; // floor should be below this value, line above
-    private double redThreshold = 1.9; // red should be below this value, blue above
+    private final double fast = 0.5; // Limit motor power to this value
+    private final double medium = 0.3; // medium speed
+    private final double slow = 0.1; // slow speed
+    private final double clicksPerInch = 29; // empirically measured
+    private final double clicksPerDeg = 9.94; // empirically measured
 
     @Override
     public void runOpMode() {
@@ -119,7 +108,7 @@ public class EncoderMovement extends LinearOpMode {
                 leftRearMotor.isBusy() && rightRearMotor.isBusy()) {
 
             // Display it for the driver.
-            telemetry.addLine("Move Foward");
+            telemetry.addLine("Move Forward");
             telemetry.addData("Target", "%7d :%7d", lfPos, rfPos, lrPos, rrPos);
             telemetry.addData("Actual", "%7d :%7d", leftFrontMotor.getCurrentPosition(),
                     rightFrontMotor.getCurrentPosition(), leftRearMotor.getCurrentPosition(),
